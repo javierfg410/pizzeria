@@ -16,7 +16,7 @@ use App\Http\Controllers\pizzaController;
 */
 
 Route::get('/', function () {
-    return view('inicio');
+    return view('layouts/app');
 });
 Route::get('/pizza', [pizzaController::class, 'index']);
 
