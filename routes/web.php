@@ -14,13 +14,14 @@ use App\Http\Controllers\pizzaController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/', [pizzaController::class, 'index']);
+/*
 Route::get('/', function () {
     return view('layouts/app');
 });
 Route::get('/pizza', [pizzaController::class, 'index']);
 
-
+*/
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

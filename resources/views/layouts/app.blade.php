@@ -18,14 +18,14 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
         @include('cabeceras.cabecera') 
 
         <main class="py-4">
-            @yield('content')
+            @include('pizza') 
         </main>
     </div>
 </body>

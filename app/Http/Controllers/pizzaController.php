@@ -44,7 +44,7 @@ class pizzaController extends Controller
         }
    
         
-        return view('pizza', ['pizzas' => $pizza]);
+        return view('layouts/app', ['pizzas' => $pizza]);
     }
 }
 
