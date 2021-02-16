@@ -24,7 +24,7 @@
     <div id="app">
         @include('cabeceras.cabecera') 
 
-        <main class="py-4">
+        <main class="py-4  ">
             @include('pizza') 
         </main>
     </div>

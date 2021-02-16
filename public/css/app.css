@@ -73,10 +73,10 @@ body {
   line-height: 1.6;
   color: #212529;
   text-align: left;
-  background-image: url("../img/fondo.jpg") ;
+  background-image: url("../img/fondo.svg") ;
   background-repeat: no-repeat;
   background-size: 100vw auto ;
-  /*background-color: #f8fafc;*/
+  background-color: #ffffff;
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
@@ -7066,7 +7066,7 @@ button.bg-danger:focus {
 }
 
 .bg-light {
-  background-color: #f8f9fa !important;
+  background-color: #77777787 !important;
 }
 
 a.bg-light:hover,
