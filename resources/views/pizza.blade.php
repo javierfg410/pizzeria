@@ -1,6 +1,8 @@
+@extends('layouts.app')
 
+@section('content')
 
-<div id="carouselPizza" class=" bg-light carousel slide" data-ride="carousel">
+<div id="carouselPizza" class=" bg-trasparente carousel slide" data-ride="carousel" style="height:90vh">
     <img class=" w-100 " src="{{ asset('img/clasicas.png')  }}" alt="">
     <ol class="carousel-indicators">
     @foreach($pizzas as $num =>$pizza)
@@ -11,11 +13,12 @@
     <div class="carousel-inner">
     @foreach($pizzas as $num =>$pizza)
         
-        <div class="carousel-item {{  $num == "1" ? "active" :""  }}">
+        <div class="carousel-item {{  $num == "1" ? "active" :""  }} product">
             <img class="d-block h-100 mx-auto" src="{{ asset('img/pizza/' . $pizza["nombre"] . '.png')  }}" alt="First slide">
-            <div class="carousel-caption d-none d-md-block">
-                <h1 class="texto-borde">{{$pizza["nombre"]}}</h1>
-                <p class="texto-borde">
+            <div class="carousel-caption d-none d-md-block" style="position: static">
+                <button class="add-to-cart"  @click='addToCart("{{ $pizza["nombre"] }}", "{{ $pizza["precio"] }}")'>Añadir a la cesta</button>
+                <h1 class="texto-borde"style="">{{$pizza["nombre"]}}</h1>
+                <p class="texto-borde" style="">
                 @foreach($pizza["ingredientes"] as $valor => $ingrediente)
                     {{$ingrediente["nombre"]}} {{  $valor == count($pizza["ingredientes"])-1 ? "" :","  }}
                 @endforeach</p>
@@ -34,8 +37,8 @@
       <span class="sr-only">Next</span>
     </a>
   </div>
-  <img class=" w-100 bg-light" src="{{ asset('img/menu.png')  }}" alt="">
-  <div class="container-fluid bg-light overflow-hidden ">
+  <img class=" w-100 bg-trasparente" src="{{ asset('img/menu.png')  }}" alt="">
+  <div class="container-fluid bg-trasparente overflow-hidden ">
     
     @foreach($pizzas as $num =>$pizza)
     @if( $num ==1)
@@ -55,4 +58,7 @@
         </div>
        
     @endforeach 
+  
   </div>
+  
+  @endsection

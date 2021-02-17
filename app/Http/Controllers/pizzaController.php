@@ -36,6 +36,7 @@ class pizzaController extends Controller
 			
             $pizza[$pizzaData->id_pizza] = array(
                 "nombre" => $pizzaData->nombre,
+                "precio" => $pizzaData->precio,
                 "ingredientes" => $ingredientes
             );
             
@@ -44,7 +45,7 @@ class pizzaController extends Controller
         }
    
         
-        return view('layouts/app', ['pizzas' => $pizza]);
+        return view('pizza', ['pizzas' => $pizza]);
     }
 }
 

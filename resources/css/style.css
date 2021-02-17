@@ -83,13 +83,11 @@ body {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
-#inicioSesion .v-dropdown-menu__container , #registro .v-dropdown-menu__container{
+#inicioSesion .v-dropdown-menu__container{
   position: fixed;
     z-index: 994;
     max-width: none;
     top: 10vh;
-    right: 0;
-  
 }
 @media (max-width: 576px) {
   .texto-pizza{

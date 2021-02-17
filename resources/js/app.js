@@ -1,32 +1,82 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
 require('./bootstrap');
-
 window.Vue = require('vue').default;
+//import Vue from 'vue/dist/vue.esm.js';
+import Vue from 'vue';
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+import DropdownMenu from 'v-dropdown-menu';
+import 'v-dropdown-menu/dist/v-dropdown-menu.css'; // Base style, required.
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-const app = new Vue({
+Vue.use(DropdownMenu)  ;
+  const app = new Vue({
     el: '#app',
-});
+    data: {
+        cart:[],
+        mostrarMenu: 'true',
+    },
+    mounted() {
+        if (localStorage.getItem('cart')) {
+          try {
+            this.cart = JSON.parse(localStorage.getItem('cart'));
+          } catch(e) {
+            localStorage.removeItem('cart');
+          }
+        }
+    },
+    computed : {
+      
+      pizzaCesta(){
+        var precioTotal = 0;
+        this.cart.forEach(pizza => {
+          precioTotal = precioTotal + (parseFloat(pizza.precio) * pizza.cantidad);
+        });
+        return precioTotal;
+      },
+      cartAmount(){
+        var cestaTotal = 0;
+        this.cart.forEach(pizza => {
+          cestaTotal = cestaTotal + (1 * pizza.cantidad);
+        });
+        return cestaTotal
+      }
+    },
+    methods: {
+      precioIndividual(id){
+        if(this.cart.find(b => b.id === id)){
+          var pizza = this.cart.find(b => b.id === id);
+          return (pizza.cantidad * parseFloat(pizza.precio));
+        }else{
+          return 0;
+        }
+
+      },
+      addToCart(id,precio){
+        if(this.cart.find(b => b.id === id)){
+          this.cart.find(b => b.id === id).cantidad++;
+        }else{
+          var pizza = {
+            'id' : id,
+            'precio' : precio,
+            'cantidad' : 1
+          }   
+          this.cart.push(pizza);
+        }
+        const parsed = JSON.stringify(this.cart);
+        localStorage.setItem('cart', parsed);
+      },
+      enviarPedido(){
+        let vm= this;
+        axios.post('/pedido', vm.cart).then(
+          function(response){
+            console.log(response);
+          })
+          .catch(function (error){
+            var errors = error.response;
+            console.log(errors);
+          });
+        
+      }
+
+    }
+  });
