@@ -68,7 +68,7 @@
                         <ul slot="body">
                           <li v-for="i in cart" :key="i.id">@{{i.cantidad}} <a href="">@{{i.id}}: Precio @{{precioIndividual(i.id)}}</a></li>
                         </ul>
-                        <div slot="footer">Total pedido @{{ pizzaCesta }} <button @click="enviarPedido">pedir</button> </div>
+                        <div slot="footer">Total pedido @{{ pizzaCesta }} <button @click="enviarPedido">pedir</button> <button @click="borrarPedido">Limpiar</button></div>
                       </dropdown-menu>
                     
                 </li>

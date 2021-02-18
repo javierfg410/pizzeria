@@ -24,8 +24,8 @@ Route::get('/pizza', [pizzaController::class, 'index']);
 */
 Auth::routes();
 Route::post('/pedido', ['uses' => 'App\Http\Controllers\pedidosController@pedido' ]);
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [pizzaController::class, 'index']);
 
-Auth::routes();
+//Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

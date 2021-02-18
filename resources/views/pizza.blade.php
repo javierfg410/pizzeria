@@ -14,13 +14,14 @@
     @foreach($pizzas as $num =>$pizza)
         
         <div class="carousel-item {{  $num == "1" ? "active" :""  }} product">
-            <img class="d-block h-100 mx-auto" src="{{ asset('img/pizza/' . $pizza["nombre"] . '.png')  }}" alt="First slide">
+            <img class="d-block h-100 mx-auto" src="{{ asset('img/pizza/' . $pizza->nombre . '.png')  }}" alt="First slide">
             <div class="carousel-caption d-none d-md-block" style="position: static">
-                <button class="add-to-cart"  @click='addToCart("{{ $pizza["nombre"] }}", "{{ $pizza["precio"] }}")'>Añadir a la cesta</button>
-                <h1 class="texto-borde"style="">{{$pizza["nombre"]}}</h1>
+                <button class="add-to-cart"  @click='addToCart("{{ $pizza->nombre }}", "{{ $pizza->precio }}")'>Añadir a la cesta</button>
+                <h1 class="texto-borde"style="">{{$pizza->nombre}}</h1>
                 <p class="texto-borde" style="">
-                @foreach($pizza["ingredientes"] as $valor => $ingrediente)
-                    {{$ingrediente["nombre"]}} {{  $valor == count($pizza["ingredientes"])-1 ? "" :","  }}
+                @foreach($pizza->ingredientes as $valor => $ingrediente)
+                
+                    {{$ingrediente->nombre}} {{  $valor == count($pizza->ingredientes)-1 ? "" :","  }}
                 @endforeach</p>
             </div>
         </div>
@@ -41,18 +42,20 @@
   <div class="container-fluid bg-trasparente overflow-hidden ">
     
     @foreach($pizzas as $num =>$pizza)
-    @if( $num ==1)
+    @if( $num ==0)
+    
         <div class="row">
-    @elseif($num % 7 == 0 )
+    @elseif($num % 6 == 0 )
+    
     </div>
     <div class="row">
     @endif 
         <div class="col-lg-2 col-sm-2 col-md-2" >
             <p class="texto-borde texto-pizza"
              >
-                {{$pizza["nombre"]}}
+                {{$pizza->nombre}}
             </p>
-            <a href="#carouselPizza" data-slide-to="{{$num-1}}"><img  class="img-fluid" src="{{ asset('img/pizza/' . $pizza["nombre"] . '.png')  }}" alt="" ></a>
+            <a href="#carouselPizza" data-slide-to="{{$num}}"><img  class="img-fluid" src="{{ asset('img/pizza/' . $pizza->nombre . '.png')  }}" alt="" ></a>
             
            
         </div>

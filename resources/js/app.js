@@ -65,11 +65,20 @@ Vue.use(DropdownMenu)  ;
         const parsed = JSON.stringify(this.cart);
         localStorage.setItem('cart', parsed);
       },
+      borrarPedido(){
+        this.cart = [];
+        const parsed = JSON.stringify(this.cart);
+        localStorage.setItem('cart', parsed);
+      },
       enviarPedido(){
         let vm= this;
         axios.post('/pedido', vm.cart).then(
           function(response){
-            console.log(response);
+            if(response.data){
+              console.log(response);
+            }else{
+              window.location.href = '/login';
+            }
           })
           .catch(function (error){
             var errors = error.response;
