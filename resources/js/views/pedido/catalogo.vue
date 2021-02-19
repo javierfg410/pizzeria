@@ -37,7 +37,9 @@
     <div class="container-fluid">
       <div class="row">
         <div v-for="pizza in pizzas" :key="pizza.pizza_id" :data="pizzas" class="col-md-6">
-          <div class="container-fluid" @click="addToCart(pizza.nombre, pizza.precio)">
+          <div
+            class="container-fluid"
+          >
             <div class="row">
               <div class="col-md-12 w-100 h-100 vertical-center" style="text-align: center;">
                 <img :src="pizza.src" class="img-fluid " alt="pizza.nombre">
@@ -47,6 +49,20 @@
                   <button class="btn btn-light">
                     Pizza: {{ pizza.nombre }}
                   </button>
+                </div>
+              </div>
+              <div class="col-md-12 vertical-center contenido card" style="position: absolute; text-align: center;display: flex;align-items: center;opacity: 0">
+                <div class=" w-100 card-body">
+                  <div class="card-body">
+                    <h1 class="card-header">Pizza: {{ pizza.nombre }}</h1>
+                    <h2 class="card-subtitle mb-2 text-muted">Ingredientes:</h2>
+                    <div v-for="ingrediente in pizza.ingredientes" :key="ingrediente.ingredientes_id" class="card-text">
+                      <h3>{{ ingrediente.nombre }}</h3>
+                    </div>
+                    <div class="card-footer">
+                      <button class="btn btn-info" @click="addToCart(pizza.nombre, pizza.precio)">Añadir al carrito</button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -73,6 +89,7 @@ export default {
   directives: { waves, permission },
   data() {
     return {
+      hover: false,
       isUserLogged: isLogged(),
       cart: [],
       pizzas: null,
@@ -107,7 +124,7 @@ export default {
       return precioTotal;
     },
     cartAmount(){
-      this.getList;
+      this.getPizzas;
       var cestaTotal = 0;
       this.cart.forEach(pizza => {
         cestaTotal = cestaTotal + (1 * pizza.cantidad);
@@ -116,15 +133,7 @@ export default {
     },
   },
   async mounted() {
-    const { limit, page } = this.query;
-    this.loading = true;
-    const data = await pizzaResource.list(this.query);
-    this.pizzas = data;
-    this.pizzas.forEach((element, index) => {
-      this.getIngredienes(element.pizza_id);
-      this.pizzas[index].src = '/img/pizza/' + element.nombre + '.png';
-      element['index'] = (page - 1) * limit + index + 1;
-    });
+    this.getPizzas();
     this.total = 0;
     this.loading = false;
     if (localStorage.getItem('cart')) {
@@ -142,12 +151,21 @@ export default {
     registro(){
       this.$router.push('/registro?redirect=');
     },
-    async getIngredienes(id){
-      this.loading = true;
-      const data = await pizzaResource.ingredientes(id);
-      this.pizzas[id].ingredientes = data;
-      console.log(this.pizzas);
-      this.loading = false;
+    getPizzas(){
+      pizzaResource.list(this.query)
+        .then((data) => {
+          if (data) {
+            this.pizzas = data;
+            console.log(data);
+            this.pizzas.forEach((element, index) => {
+              // this.pizzas[index].src = '/img/pizza/' + element.nombre + '.png';
+              this.pizzas[index].index = index;
+              console.log(this.pizzas[index].ingredientes);
+            });
+          } else {
+            console.log('sin datos');
+          }
+        }).catch((e) => console.log(`Error ${e}`));
     },
     precioIndividual(id){
       if (this.cart.find(b => b.id === id)){
@@ -203,6 +221,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.contenido:hover{
+  opacity: 1!important;
+}
 .edit-input {
   padding-right: 100px;
 }

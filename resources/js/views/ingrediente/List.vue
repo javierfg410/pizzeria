@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleCreate">
-        {{ $t('table.add') }}
+        Añadir
       </el-button>
     </div>
     <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%">
@@ -91,8 +91,6 @@ export default {
   },
   methods: {
     async getList() {
-      console.log('aqui llego');
-      console.log(this.query);
       const { limit, page } = this.query;
       this.loading = true;
       const data = await ingredienteResource.list(this.query);
@@ -100,7 +98,6 @@ export default {
       this.list.forEach((element, index) => {
         element['index'] = (page - 1) * limit + index + 1;
       });
-      console.log(this.list);
       this.total = 0;
       this.loading = false;
     },

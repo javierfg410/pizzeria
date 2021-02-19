@@ -1,11 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
-      <el-input v-model="query.keyword" :placeholder="$t('table.keyword')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        {{ $t('table.search') }}
-      </el-button>
-    </div>
     <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%">
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
@@ -85,8 +79,6 @@ export default {
   },
   methods: {
     async getList() {
-      console.log('aqui llego');
-      console.log(this.query);
       const { limit, page } = this.query;
       this.loading = true;
       const data = await pedidoResource.list(this.query);
@@ -94,7 +86,6 @@ export default {
       this.list.forEach((element, index) => {
         element['index'] = (page - 1) * limit + index + 1;
       });
-      console.log(this.list);
       this.total = 0;
       this.loading = false;
     },

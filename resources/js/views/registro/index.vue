@@ -86,7 +86,6 @@ export default {
       }
     };
     const validateconfPassword = (rule, value, callback) => {
-      console.log(value);
       if (value !== this.registroForm.password) {
         callback(new Error('Las contraseñas no cohinciden'));
       } else {

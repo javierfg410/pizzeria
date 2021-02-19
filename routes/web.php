@@ -27,7 +27,9 @@ Route::get('/pizza/list', function () {
 Route::get('/ingrediente/list', function () {
     return view('laravue');
 });
-
+Route::get('/pedido/list', function () {
+    return view('laravue');
+});
 Route::get('/api/pizzas', [pizzaController::class, 'getPizza']);
 Route::get('/api/pizzas/{id}/ingredientes', [pizzaController::class, 'getIngredientes']);
 Route::post('/api/pizzas', ['uses' => 'pizzaController@setPizza' ]);

@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleCreate">
-        {{ $t('table.add') }}
+        Añadir
       </el-button>
     </div>
     <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%">
@@ -162,7 +162,6 @@ export default {
     },
     createPizza() {
       this.newPizza.ingredientes = this.ingredientes;
-      console.log(this.newPizza);
       this.$refs['pizzaForm'].validate((valid) => {
         if (valid) {
           this.pizzaCreating = true;
