@@ -21,11 +21,17 @@ Route::get('/', function () {
 Route::get('/pedido/catalogo', function () {
     return view('laravue');
 });
-
+Route::get('/pizza/list', function () {
+    return view('laravue');
+});
+Route::get('/ingrediente/list', function () {
+    return view('laravue');
+});
 
 Route::get('/api/pizzas', [pizzaController::class, 'getPizza']);
 Route::get('/api/pizzas/{id}/ingredientes', [pizzaController::class, 'getIngredientes']);
 Route::post('/api/pizzas', ['uses' => 'pizzaController@setPizza' ]);
+Route::delete('/api/pizzas/{id}', ['uses' => 'pizzaController@delPizza' ]);
 
 Route::get('/api/pedidos', [pedidosController::class, 'getPedido']);
 Route::post('/api/pedidos', ['uses' => 'pedidosController@pedido' ]);
@@ -35,6 +41,7 @@ Route::post('/api/auth/registro', ['uses' => 'Api\userController@store' ]);
 
 Route::get('/api/ingredientes', [ingredienteController::class, 'getIngrediente']);
 Route::post('/api/ingredientes', ['uses' => 'ingredienteController@setIngrediente' ]);
+Route::delete('/api/ingredientes/{id}', ['uses' => 'ingredienteController@delIngrediente' ]);
 
 Route::group(['middleware' => 'web'], function () {
     Route::get(env('LARAVUE_PATH'), 'LaravueController@index')->where('any', '.*')->name('laravue');

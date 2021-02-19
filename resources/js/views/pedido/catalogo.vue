@@ -120,7 +120,6 @@ export default {
     this.loading = true;
     const data = await pizzaResource.list(this.query);
     this.pizzas = data;
-    console.log(data);
     this.pizzas.forEach((element, index) => {
       this.getIngredienes(element.pizza_id);
       this.pizzas[index].src = '/img/pizza/' + element.nombre + '.png';

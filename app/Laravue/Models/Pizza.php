@@ -30,7 +30,6 @@ class Pizza extends Model
     }
     public function ingredientes()
     {
-      
         return $this->belongsToMany(  Ingredientes::class, 'ingredientes_pizza','pizza_id','ingredientes_id');
     }
     public function getJWTIdentifier()

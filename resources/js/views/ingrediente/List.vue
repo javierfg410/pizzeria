@@ -1,10 +1,6 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="query.keyword" :placeholder="$t('table.keyword')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        {{ $t('table.search') }}
-      </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleCreate">
         {{ $t('table.add') }}
       </el-button>
@@ -23,7 +19,7 @@
       </el-table-column>
       <el-table-column align="center" label="Actions" width="350">
         <template slot-scope="scope">
-          <el-button type="danger" size="small" icon="el-icon-delete" @click="handleDelete(scope.row.id, scope.row.name);">
+          <el-button type="danger" size="small" icon="el-icon-delete" @click="handleDelete(scope.row.ingredientes_id, scope.row.nombre);">
             Eliminar
           </el-button>
         </template>
@@ -78,6 +74,7 @@ export default {
       dialogPermissionLoading: false,
       currentIngredienteId: 0,
       currentIngrediente: {
+        ingredientes_id: '',
         name: '',
         precio: '',
       },
@@ -119,9 +116,9 @@ export default {
       });
     },
     handleDelete(id, name) {
-      this.$confirm('This will permanently delete Ingrediente ' + name + '. Continue?', 'Warning', {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
+      this.$confirm('Se eliminara el siguiente ingrediente: ' + name + '. ¿Continuar?', 'Warning', {
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar',
         type: 'warning',
       }).then(() => {
         ingredienteResource.destroy(id).then(response => {

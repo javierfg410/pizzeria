@@ -1,10 +1,6 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="query.keyword" :placeholder="$t('table.keyword')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        {{ $t('table.search') }}
-      </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleCreate">
         {{ $t('table.add') }}
       </el-button>
@@ -29,7 +25,7 @@
       </el-table-column>
       <el-table-column align="center" label="Actions" width="350">
         <template slot-scope="scope">
-          <el-button type="danger" size="small" icon="el-icon-delete" @click="handleDelete(scope.row.id, scope.row.name);">
+          <el-button type="danger" size="small" icon="el-icon-delete" @click="handleDelete(scope.row.pizza_id, scope.row.nombre);">
             Eliminar
           </el-button>
         </template>
@@ -38,13 +34,19 @@
     <el-dialog :title="'Crear Nueva Pizza'" :visible.sync="dialogFormVisible">
       <div v-loading="pizzaCreating" class="form-container">
         <el-form ref="pizzaForm" :rules="rules" :model="newPizza" label-position="left" label-width="150px" style="max-width: 500px;">
-          <el-form-item :label="$t('pizza.nombre')" prop="name">
+          <el-form-item label="Nombre" prop="name">
             <el-input v-model="newPizza.nombre" />
           </el-form-item>
-          <el-form-item :label="$t('pizza.precio')" prop="number">
+          <el-form-item label="Precio" prop="number">
             <el-input v-model="newPizza.precio" />
           </el-form-item>
+          <el-form-item label="Ingredientes" prop="checkbox">
+            <div v-for="ingrediente in listIngredientes" :key="ingrediente.ingrediente_id" :data="listIngredientes">
+              <el-checkbox :id="ingrediente.ingrediente_id" v-model="ingredientes" :label="ingrediente.nombre" :value="ingrediente.ingrediente_id">{{ ingrediente.nombre }}</el-checkbox>
+            </div>
+          </el-form-item>
         </el-form>
+
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">
             {{ $t('table.cancel') }}
@@ -62,8 +64,10 @@
 import PizzaResource from '@/api/pizza';
 import waves from '@/directive/waves'; // Waves directive
 import permission from '@/directive/permission'; // Permission directive
+import IngredienteResource from '@/api/ingrediente';
 
 const pizzaResource = new PizzaResource();
+const ingredienteResource = new IngredienteResource();
 
 export default {
   name: 'PizzaList',
@@ -71,6 +75,8 @@ export default {
   data() {
     return {
       list: null,
+      listIngredientes: null,
+      ingredientes: [],
       total: 0,
       loading: true,
       downloading: false,
@@ -81,12 +87,17 @@ export default {
         keyword: '',
         pizza: '',
       },
-      newPizza: {},
+      newPizza: {
+        nombre: null,
+        precio: null,
+        ingredientes: [],
+      },
       dialogFormVisible: false,
       dialogPermissionVisible: false,
       dialogPermissionLoading: false,
       currentPizzaId: 0,
       currentPizza: {
+        pizza_id: '',
         name: '',
         precio: '',
       },
@@ -107,7 +118,9 @@ export default {
       const { limit, page } = this.query;
       this.loading = true;
       const data = await pizzaResource.list(this.query);
+      const ing = await ingredienteResource.list(this.query);
       this.list = data;
+      this.listIngredientes = ing;
       this.list.forEach((element, index) => {
         element['index'] = (page - 1) * limit + index + 1;
       });
@@ -126,9 +139,9 @@ export default {
       });
     },
     handleDelete(id, name) {
-      this.$confirm('This will permanently delete Pizza ' + name + '. Continue?', 'Warning', {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
+      this.$confirm('Se eliminara la Pizza ' + name + '. ¿Continuar?', 'Warning', {
+        confirmButtonText: 'Si',
+        cancelButtonText: 'Cancelar',
         type: 'warning',
       }).then(() => {
         pizzaResource.destroy(id).then(response => {
@@ -148,6 +161,8 @@ export default {
       });
     },
     createPizza() {
+      this.newPizza.ingredientes = this.ingredientes;
+      console.log(this.newPizza);
       this.$refs['pizzaForm'].validate((valid) => {
         if (valid) {
           this.pizzaCreating = true;
@@ -162,6 +177,7 @@ export default {
               this.resetNewPizza();
               this.dialogFormVisible = false;
               this.handleFilter();
+              this.loading = false;
             })
             .catch(error => {
               console.log(error);

@@ -43,9 +43,21 @@ class pizzaController extends Controller
         $pizza->nombre = $newPizza['nombre'];
         $pizza->precio = $newPizza['precio'];
         $pizza->save();
-     
+        
+        foreach($newPizza['ingredientes'] as $ingrediente){
+            $ingredienteSQL = Ingredientes::where('nombre',$ingrediente)->first();
+            $pizza->ingredientes()->attach($ingredienteSQL->ingredientes_id);
+        }
         
         return $pizza;
+    }
+    public function delPizza($id)
+    {
+		//SELECT a la base de datos pizzas
+    
+        $pizza = Pizza::where('pizza_id', $id)->first();
+        
+        return $pizza->delete();
     }
 }
 

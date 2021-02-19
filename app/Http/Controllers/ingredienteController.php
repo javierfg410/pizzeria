@@ -29,5 +29,13 @@ class ingredienteController extends Controller
         
         return $ingrediente;
     }
+    public function delIngrediente($id)
+    {
+		//SELECT a la base de datos pizzas
+    
+        $pizza = Ingredientes::where('ingredientes_id', $id)->first();
+        
+        return $pizza->delete();
+    }
 }
 
