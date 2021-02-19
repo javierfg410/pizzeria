@@ -2,7 +2,10 @@
   <div class="app-container" style="backgroung-color:black">
     <div class="filter-container">
       <div class="right-menu" style="float: right;">
-        <button class=" button btn btn-light" @click="login()">
+        <button v-if="!isUserLogged" class=" button btn btn-light" @click="registro()">
+          <span class="description">Registrarse</span>
+        </button>
+        <button v-if="!isUserLogged" class=" button btn btn-light" @click="login()">
           <span class="description">Inicio Sesión</span>
         </button>
         <el-dropdown class=" right-menu-item hover-effect" trigger="click">
@@ -60,6 +63,8 @@ import PedidoResource from '@/api/pedido';
 import waves from '@/directive/waves'; // Waves directive
 import permission from '@/directive/permission'; // Permission directive
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
+import { isLogged } from '@/utils/auth';
+
 const pizzaResource = new PizzaResource();
 const pedidoResource = new PedidoResource();
 
@@ -68,6 +73,7 @@ export default {
   directives: { waves, permission },
   data() {
     return {
+      isUserLogged: isLogged(),
       cart: [],
       pizzas: null,
       total: 0,
@@ -134,6 +140,9 @@ export default {
     login(){
       this.$router.push('/login?redirect=');
     },
+    registro(){
+      this.$router.push('/registro?redirect=');
+    },
     async getIngredienes(id){
       this.loading = true;
       const data = await pizzaResource.ingredientes(id);
@@ -169,19 +178,23 @@ export default {
       localStorage.setItem('cart', parsed);
     },
     enviarPedido(){
-      pedidoResource
-        .store(this.cart)
-        .then(response => {
-          this.$message({
-            message: 'Nuevo Pedido  Realizado correctamente.',
-            type: 'success',
-            duration: 5 * 1000,
+      if (!this.isUserLogged){
+        this.login();
+      } else {
+        pedidoResource
+          .store(this.cart)
+          .then(response => {
+            this.$message({
+              message: 'Nuevo Pedido  Realizado correctamente.',
+              type: 'success',
+              duration: 5 * 1000,
+            });
+            this.borrarPedido();
+          })
+          .catch(error => {
+            console.log(error);
           });
-          this.borrarPedido();
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      }
     },
     formatJson(filterVal, jsonData) {
       return jsonData.map(v => filterVal.map(j => v[j]));

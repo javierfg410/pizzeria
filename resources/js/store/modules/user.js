@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/auth';
+import { login, logout, getInfo, registro } from '@/api/auth';
 import { isLogged, setLogged, removeToken } from '@/utils/auth';
 import router, { resetRouter } from '@/router';
 import store from '@/store';
@@ -54,7 +54,22 @@ const actions = {
         });
     });
   },
-
+  // user Registro
+  registro({ commit }, userInfo) {
+    const { name, email, password, roles, role } = userInfo;
+    return new Promise((resolve, reject) => {
+      registro({ name, email: email.trim(), password: password, roles, role })
+        .then(response => {
+          login(userInfo);
+          setLogged('1');
+          resolve();
+        })
+        .catch(error => {
+          console.log(error);
+          reject(error);
+        });
+    });
+  },
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {

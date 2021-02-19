@@ -54,6 +54,11 @@ export const constantRoutes = [
     hidden: true,
   },
   {
+    path: '/registro',
+    component: () => import('@/views/registro/index'),
+    hidden: true,
+  },
+  {
     path: '/pedido/catalogo',
     component: () => import('@/views/pedido/catalogo'),
     hidden: true,

@@ -2,7 +2,7 @@
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <h3 class="title">
-        {{ $t('login.title') }}
+        Iniciar Sesión
       </h3>
       <lang-select class="set-language" />
       <el-form-item prop="email">
@@ -20,7 +20,7 @@
           :type="pwdType"
           name="password"
           auto-complete="on"
-          placeholder="password"
+          placeholder="contraseña"
           @keyup.enter.native="handleLogin"
         />
         <span class="show-pwd" @click="showPwd">
@@ -29,12 +29,12 @@
       </el-form-item>
       <el-form-item>
         <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
-          Sign in
+          Iniciar Sesión
         </el-button>
       </el-form-item>
       <div class="tips">
-        <span style="margin-right:20px;">Email: admin@laravue.dev</span>
-        <span>Password: laravue</span>
+        <span style="margin-right:20px;">Email prueba: admin@laravue.dev</span>
+        <span>Password prueba: laravue</span>
       </div>
     </el-form>
   </div>

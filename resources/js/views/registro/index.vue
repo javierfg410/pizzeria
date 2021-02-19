@@ -1,34 +1,56 @@
 <template>
-  <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+  <div class="registro-container">
+    <el-form ref="registroForm" :model="registroForm" :rules="registroRules" class="registro-form" auto-complete="on" label-position="left">
       <h3 class="title">
-        {{ $t('login.title') }}
+        Registro de usuario
       </h3>
       <lang-select class="set-language" />
+      <el-form-item prop="name">
+        <span class="svg-container">
+          <svg-icon icon-class="user" />
+        </span>
+        <el-input v-model="registroForm.name" name="name" type="text" auto-complete="on" placeholder="Nombre" />
+      </el-form-item>
       <el-form-item prop="email">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input v-model="loginForm.email" name="email" type="text" auto-complete="on" :placeholder="$t('login.email')" />
+        <el-input v-model="registroForm.email" name="email" type="text" auto-complete="on" placeholder="Email" />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
         <el-input
-          v-model="loginForm.password"
+          v-model="registroForm.password"
           :type="pwdType"
           name="password"
           auto-complete="on"
-          placeholder="password"
-          @keyup.enter.native="handleLogin"
+          placeholder="Contraseña"
+          @keyup.enter.native="handlerRegistro"
+        />
+        <span class="show-pwd" @click="showPwd">
+          <svg-icon icon-class="eye" />
+        </span>
+      </el-form-item>
+      <el-form-item prop="confPassword">
+        <span class="svg-container">
+          <svg-icon icon-class="password" />
+        </span>
+        <el-input
+          v-model="registroForm.confPassword"
+          :type="pwdType"
+          name="confPassword"
+          auto-complete="on"
+          placeholder="Confirma la contraseña"
+          @keyup.enter.native="handlerRegistro"
         />
         <span class="show-pwd" @click="showPwd">
           <svg-icon icon-class="eye" />
         </span>
       </el-form-item>
       <el-form-item>
-        <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
+        <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handlerRegistro">
           Sign in
         </el-button>
       </el-form-item>
@@ -46,7 +68,7 @@ import { validEmail } from '@/utils/validate';
 import { csrf } from '@/api/auth';
 
 export default {
-  name: 'Login',
+  name: 'Registro',
   components: { LangSelect },
   data() {
     const validateEmail = (rule, value, callback) => {
@@ -58,19 +80,32 @@ export default {
     };
     const validatePass = (rule, value, callback) => {
       if (value.length < 4) {
-        callback(new Error('Password cannot be less than 4 digits'));
+        callback(new Error('La contraseña debe tener mas de 4 digitos'));
+      } else {
+        callback();
+      }
+    };
+    const validateconfPassword = (rule, value, callback) => {
+      console.log(value);
+      if (value !== this.registroForm.password) {
+        callback(new Error('Las contraseñas no cohinciden'));
       } else {
         callback();
       }
     };
     return {
-      loginForm: {
-        email: 'admin@laravue.dev',
-        password: 'laravue',
+      registroForm: {
+        name: '',
+        email: '',
+        password: '',
+        confPassword: '',
+        role: 'user',
+        roles: ['user'],
       },
-      loginRules: {
+      registroRules: {
         email: [{ required: true, trigger: 'blur', validator: validateEmail }],
         password: [{ required: true, trigger: 'blur', validator: validatePass }],
+        confPassword: [{ required: true, trigger: 'blur', validator: validateconfPassword }],
       },
       loading: false,
       pwdType: 'password',
@@ -98,12 +133,12 @@ export default {
         this.pwdType = 'password';
       }
     },
-    handleLogin() {
-      this.$refs.loginForm.validate(valid => {
+    handlerRegistro() {
+      this.$refs.registroForm.validate(valid => {
         if (valid) {
           this.loading = true;
           csrf().then(() => {
-            this.$store.dispatch('user/login', this.loginForm)
+            this.$store.dispatch('user/registro', this.registroForm)
               .then(() => {
                 this.$router.push({ path: this.redirect || '/', query: this.otherQuery }, onAbort => {});
                 this.loading = false;
@@ -135,7 +170,7 @@ $bg:#2d3a4b;
 $light_gray:#eee;
 
 /* reset element-ui css */
-.login-container {
+.registro-container {
   .el-input {
     display: inline-block;
     height: 47px;
@@ -168,12 +203,12 @@ $light_gray:#eee;
 $bg:#2d3a4b;
 $dark_gray:#889aa4;
 $light_gray:#eee;
-.login-container {
+.registro-container {
   position: fixed;
   height: 100%;
   width: 100%;
   background-color: $bg;
-  .login-form {
+  .registro-form {
     position: absolute;
     left: 0;
     right: 0;
@@ -223,10 +258,10 @@ $light_gray:#eee;
   }
 }
 @media screen and (orientation:landscape) and (max-width:1024px) {
-  .login-container {
+  .registro-container {
     position: relative;
     overflow-y: auto;
-    .login-form {
+    .registro-form {
       transform: translate(-50%, -50%);
       left: 50%;
       top: 50%;

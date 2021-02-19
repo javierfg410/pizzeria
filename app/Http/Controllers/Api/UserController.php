@@ -87,7 +87,6 @@ class UserController extends BaseController
             ]);
             $role = Role::findByName($params['role']);
             $user->syncRoles($role);
-
             return new UserResource($user);
         }
     }

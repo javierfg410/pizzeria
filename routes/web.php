@@ -18,6 +18,9 @@ use App\Http\Controllers\pedidosController;
 Route::get('/', function () {
     return view('laravue');
 });
+Route::get('/pedido/catalogo', function () {
+    return view('laravue');
+});
 
 
 Route::get('/api/pizzas', [pizzaController::class, 'getPizza']);
@@ -26,6 +29,9 @@ Route::post('/api/pizzas', ['uses' => 'pizzaController@setPizza' ]);
 
 Route::get('/api/pedidos', [pedidosController::class, 'getPedido']);
 Route::post('/api/pedidos', ['uses' => 'pedidosController@pedido' ]);
+
+Route::get('/api/get/registro', ['uses' => 'usuariosController@getUsuario' ]);
+Route::post('/api/auth/registro', ['uses' => 'Api\userController@store' ]);
 
 Route::get('/api/ingredientes', [ingredienteController::class, 'getIngrediente']);
 Route::post('/api/ingredientes', ['uses' => 'ingredienteController@setIngrediente' ]);

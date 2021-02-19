@@ -8,7 +8,7 @@ import getPageTitle from '@/utils/get-page-title';
 
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
-const whiteList = ['/login', '/auth-redirect', '/pedido/catalogo']; // no redirect whitelist
+const whiteList = ['/login', '/auth-redirect', '/registro', '/pedido/catalogo']; // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
   // start progress bar
@@ -51,6 +51,7 @@ router.beforeEach(async(to, from, next) => {
   } else {
     /* has no token*/
     if (whiteList.indexOf(to.matched[0] ? to.matched[0].path : '') !== -1) {
+      console.log('entra en la lista blanca');
       // in the free login whitelist, go directly
       next();
     } else {

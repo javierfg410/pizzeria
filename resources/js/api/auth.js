@@ -8,6 +8,13 @@ export function login(data) {
   });
 }
 
+export function registro(data) {
+  return request({
+    url: '/auth/registro',
+    method: 'post',
+    data: data,
+  });
+}
 export function getInfo(token) {
   return request({
     url: '/user',
