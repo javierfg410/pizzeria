@@ -32,7 +32,7 @@
       </el-table-column>
     </el-table>
     <el-dialog :title="'Crear Nueva Pizza'" :visible.sync="dialogFormVisible">
-      <div v-loading="pizzaCreating" class="form-container">
+      <div class="form-container">
         <el-form ref="pizzaForm" :rules="rules" :model="newPizza" label-position="left" label-width="150px" style="max-width: 500px;">
           <el-form-item label="Nombre" prop="name">
             <el-input v-model="newPizza.nombre" />
@@ -136,6 +136,7 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs['pizzaForm'].clearValidate();
+        this.ingredientes = [];
       });
     },
     handleDelete(id, name) {
@@ -177,9 +178,12 @@ export default {
               this.dialogFormVisible = false;
               this.handleFilter();
               this.loading = false;
+              this.PizzaCreating = false;
+              console.log(this.PizzaCreating);
             })
             .catch(error => {
               console.log(error);
+              this.PizzaCreating = false;
             })
             .finally(() => {
               this.PizzaCreating = false;

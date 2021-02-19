@@ -8,6 +8,10 @@ use App\Laravue\Models\Ingredientes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use \Illuminate\Support\Facades\Storage;
+use App\Laravue\Models\Ingredientes_pizza;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
 
 class pizzaController extends Controller
 {
@@ -45,6 +49,7 @@ class pizzaController extends Controller
     }
     public function setPizza(Request $request)
     {
+        Schema::disableForeignKeyConstraints();
 		//SELECT a la base de datos pizzas
         $newPizza = $request->all();
         $pizza = new Pizza;
@@ -56,16 +61,20 @@ class pizzaController extends Controller
             $ingredienteSQL = Ingredientes::where('nombre',$ingrediente)->first();
             $pizza->ingredientes()->attach($ingredienteSQL->ingredientes_id);
         }
-        
+        Schema::enableForeignKeyConstraints();
         return $pizza;
     }
     public function delPizza($id)
     {
 		//SELECT a la base de datos pizzas
-    
+        Schema::disableForeignKeyConstraints();
         $pizza = Pizza::where('pizza_id', $id)->first();
-        
-        return $pizza->delete();
+        $ingredientes = Ingredientes_pizza::where('pizza_id', $id)->delete();
+        $pizza->delete();
+        //$pizza->foreign('pizza_id_fk')->references('pizza_id')->on('ingredientes_pizza')->onDelete('cascade');
+        Schema::enableForeignKeyConstraints();
+        return $pizza;
+
     }
 }
 

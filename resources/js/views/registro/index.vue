@@ -51,7 +51,12 @@
       </el-form-item>
       <el-form-item>
         <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handlerRegistro">
-          Sign in
+          Registrarse
+        </el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button :loading="loading" type="primary" style="width:100%;" @click="login()">
+          Ya tengo cuenta (Loguearse)
         </el-button>
       </el-form-item>
       <div class="tips">
@@ -125,6 +130,9 @@ export default {
     },
   },
   methods: {
+    login(){
+      this.$router.push('/login?redirect=');
+    },
     showPwd() {
       if (this.pwdType === 'password') {
         this.pwdType = '';

@@ -26,9 +26,9 @@
       </el-table-column>
     </el-table>
     <el-dialog :title="'Crear Nuevo Ingrediente'" :visible.sync="dialogFormVisible">
-      <div v-loading="ingredienteCreating" class="form-container">
+      <div class="form-container">
         <el-form ref="ingredienteForm" :rules="rules" :model="newIngrediente" label-position="left" label-width="150px" style="max-width: 500px;">
-          <el-form-item :label="$t('ingrediente.nombre')" prop="name">
+          <el-form-item label="Nombre" prop="name">
             <el-input v-model="newIngrediente.nombre" />
           </el-form-item>
         </el-form>

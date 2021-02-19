@@ -28,7 +28,7 @@
               </span>
             </el-dropdown-item>
             <el-dropdown-item>
-              <div>Total pedido {{ pizzaCesta }} <button @click="enviarPedido">pedir</button> <button @click="borrarPedido">Limpiar</button></div>
+              <div>Total pedido {{ pizzaCesta }} <button class="btn btn-success" @click="enviarPedido">Comprar</button> <button class="btn btn-danger" @click="borrarPedido">Limpiar</button></div>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -51,7 +51,7 @@
                   </button>
                 </div>
               </div>
-              <div class="col-md-12 vertical-center contenido card" style="position: absolute; text-align: center;display: flex;align-items: center;opacity: 0">
+              <div class="col-md-12 vertical-center contenido card" style="position: absolute; text-align: center;display: flex;align-items: center;opacity: 0" @click="addToCart(pizza.nombre, pizza.precio)">
                 <div class=" w-100 card-body">
                   <div class="card-body">
                     <h1 class="card-header">Pizza: {{ pizza.nombre }}</h1>

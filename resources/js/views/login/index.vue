@@ -9,7 +9,7 @@
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input v-model="loginForm.email" name="email" type="text" auto-complete="on" :placeholder="$t('login.email')" />
+        <el-input v-model="loginForm.email" name="email" type="text" auto-complete="on" placeholder="Email" />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
@@ -30,6 +30,11 @@
       <el-form-item>
         <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
           Iniciar Sesión
+        </el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button :loading="loading" type="primary" style="width:100%;" @click="registro()">
+          Registrarse
         </el-button>
       </el-form-item>
       <div class="tips">
@@ -65,8 +70,8 @@ export default {
     };
     return {
       loginForm: {
-        email: 'admin@laravue.dev',
-        password: 'laravue',
+        email: '',
+        password: '',
       },
       loginRules: {
         email: [{ required: true, trigger: 'blur', validator: validateEmail }],
@@ -91,6 +96,9 @@ export default {
     },
   },
   methods: {
+    registro(){
+      this.$router.push('/registro?redirect=');
+    },
     showPwd() {
       if (this.pwdType === 'password') {
         this.pwdType = '';
